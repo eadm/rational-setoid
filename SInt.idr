@@ -18,6 +18,15 @@ implementation Num SInt where
         then MkInt (fromIntegerNat x) 0
         else MkInt 0 (fromIntegerNat (abs x))
 
+
+implementation Neg SInt where
+    negate (MkInt a b) = MkInt b a
+
+    (-) s1 s2 = s1 + (negate s2)
+
+    abs s@(MkInt a b) = if a > b then s else (MkInt b a)
+
+
 fromIntegerSInt : Integer -> SInt
 fromIntegerSInt x = fromInteger x
 
