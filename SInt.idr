@@ -3,6 +3,7 @@ import Setoid
 
 %access public export
 
+
 record SInt where
     constructor MkInt
     a : Nat
@@ -40,6 +41,11 @@ Show SInt where
 data SIntEq : SInt -> SInt -> Type where
     SRefl : (eq : (a1 + b2) = (a2 + b1)) -> SIntEq (MkInt a1 b1) (MkInt a2 b2)
 
+
+infix 5 $=
+
+($=) : SInt -> SInt -> Type
+($=) = SIntEq
 
 summRefl : {a1 : Nat} -> {b1 : Nat} -> {a2: Nat} -> {b2: Nat} -> (a1 = b1) -> (a2 = b2) -> (a1 + a2) = (b1 + b2)
 summRefl e1 e2 = rewrite e1 in rewrite e2 in Refl
