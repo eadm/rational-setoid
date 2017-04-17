@@ -3,6 +3,8 @@ module SIntImplementation
 import SInt
 import Setoid
 
+%access public export
+
 -- Proof of some properties of $= and SInt
 
 SIntPlusCommutative : (a, b : SInt) -> (a + b) $= (b + a)
