@@ -29,7 +29,7 @@ implementation Neg Rational where
 
 
 data RatEq : Rational -> Rational -> Type where
-    RatRefl : (eq : SIntEq (num1 * den2) (num2 * den1)) -> RatEq (MkRat num1 den1) (MkRat num2 den2)
+    RatRefl : (eq : (num1 * den2) $= (num2 * den1)) -> RatEq (MkRat num1 den1) (MkRat num2 den2)
 
 
 
@@ -43,8 +43,11 @@ symmRatEq (MkRat a1 b1) (MkRat a2 b2) (RatRefl e) = RatRefl (symmSIntEq (a1 * b2
 
 
 
-mulRefl : {a : SInt} -> {b : SInt} -> {c: SInt} -> {d: SInt} -> (a $= b) -> (c $= d) -> (a * c) $= (b * d)
-mulRefl (SRefl eq1) (SRefl eq2) = ?xxx1_1
+
+mulRefl : {u : SInt} -> {v : SInt} -> {x: SInt} -> {y: SInt} -> (u $= v) -> (x $= y) -> (u * x) $= (v * y)
+mulRefl (SRefl eq1) (SRefl eq2) = let
+
+    in SRefl ?xxx1_1
 
 
 
