@@ -26,3 +26,12 @@ SIntMultCommutative (MkInt a1 b1) (MkInt a2 b2) = SRefl (
     rewrite multCommutative a2 b1 in
     rewrite plusCommutative (b1 * a2) (a1 * b2) in Refl
 )
+
+
+
+SIntMultAssociative : (left, center, right : SInt) -> left * (center * right) $= left * center * right
+SIntMultAssociative left center right = ?SIntMultAssociative_rhs
+
+
+SIntMultRightCancel : (left, left', right : SInt) -> (left * right) $= (left' * right) -> left $= left'
+SIntMultRightCancel left left' right x = ?SIntMultRightCancel_rhs
