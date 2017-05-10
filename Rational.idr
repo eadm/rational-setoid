@@ -110,6 +110,31 @@ transRatEq
     summ_2 : (a1 * d2 * d3  +  b2 * d1 * d3  +  b3 * d2 * d1)  =  (a3 * d2 * d1  +  b2 * d3 * d1  +  b1 * d2 * d3)
     summ_2 = plusRightCancel (a1 * d2 * d3  +  b2 * d1 * d3  +  b3 * d2 * d1)  (a3 * d2 * d1  +  b2 * d3 * d1  +  b1 * d2 * d3) (a2 * (d1 * d3)) summ_r2
 
+
+    summ_2_l1 : (a1 * d2 * d3  +  b2 * d1 * d3  +  b3 * d2 * d1) = (a1 * d2 * d3  +  b3 * d2 * d1  +  b2 * (d1 * d3))
+    summ_2_l1 =
+        rewrite sym (plusAssociative (a1 * d2 * d3) (b3 * d2 * d1) (b2 * (d1 * d3))) in
+        rewrite plusCommutative (b3 * d2 * d1) (b2 * (d1 * d3)) in
+        rewrite plusAssociative (a1 * d2 * d3) (b2 * (d1 * d3)) (b3 * d2 * d1) in
+        rewrite multAssociative b2 d1 d3 in Refl
+
+
+    summ_2_r1 : (a3 * d2 * d1  +  b2 * d3 * d1  +  b1 * d2 * d3) = (a3 * d2 * d1  +  b1 * d2 * d3  +  b2 * (d1 * d3))
+    summ_2_r1 =
+        rewrite sym (plusAssociative (a3 * d2 * d1) (b1 * d2 * d3) (b2 * (d1 * d3))) in
+        rewrite plusCommutative (b1 * d2 * d3) (b2 * (d1 * d3)) in
+        rewrite plusAssociative (a3 * d2 * d1) (b2 * (d1 * d3)) (b1 * d2 * d3) in
+        rewrite multCommutative d1 d3 in
+        rewrite multAssociative b2 d3 d1 in Refl
+
+    summ_2_r : (a1 * d2 * d3  +  b3 * d2 * d1  +  b2 * (d1 * d3))  =  (a3 * d2 * d1  +  b1 * d2 * d3  +  b2 * (d1 * d3))
+    summ_2_r = trans (trans (sym summ_2_l1) summ_2) summ_2_r1
+
+
+    summ_3 : a1 * d2 * d3  +  b3 * d2 * d1  =  a3 * d2 * d1  +  b1 * d2 * d3
+    summ_3 = plusRightCancel (a1 * d2 * d3  +  b3 * d2 * d1) (a3 * d2 * d1  +  b1 * d2 * d3) (b2 * (d1 * d3)) summ_2_r
+
+
     trs : a1 * d3 + b3 * d1 = a3 * d1 + b1 * d3
     trs = ?trs_rhs1
 
