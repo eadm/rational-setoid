@@ -3,7 +3,6 @@ module Rational
 
 import Setoid
 import SInt
-import SIntImplementation
 
 %default total
 %access public export
@@ -56,6 +55,8 @@ symmRatEq : Symm RatEq
 symmRatEq (MkRat a1 b1 p1) (MkRat a2 b2 p2) (RatRefl e) = RatRefl (symmSIntEq (a1 $* b2) (a2 $* b1) e)
 
 
+
+
 transRatEq : Trans RatEq
 transRatEq
 (MkRat (MkInt a1 b1) d1 (NNZ p1))
@@ -64,9 +65,52 @@ transRatEq
 (RatRefl (SRefl e1))
 (RatRefl (SRefl e2)) = RatRefl (SRefl trs) where
 
+    mlt3 : (a1 * d2 + b2 * d1) * d3  =  (a2 * d1 + b1 * d2) * d3
+    mlt3 = rewrite e1 in Refl
+
+    mlt3_distr : a1 * d2 * d3  +  b2 * d1 * d3  =  a2 * d1 * d3  + b1 * d2 * d3
+    mlt3_distr =
+        rewrite sym (multDistributesOverPlusLeft (a1 * d2) (b2 * d1) d3) in
+        rewrite sym (multDistributesOverPlusLeft (a2 * d1) (b1 * d2) d3) in
+        rewrite mlt3 in Refl
+
+    mlt1 : (a2 * d3 + b3 * d2) * d1  =  (a3 * d2 + b2 * d3) * d1
+    mlt1 = rewrite e2 in Refl
+
+    mlt1_distr : a2 * d3 * d1  +  b3 * d2 * d1  =  a3 * d2 * d1  + b2 * d3 * d1
+    mlt1_distr =
+        rewrite sym (multDistributesOverPlusLeft (a2 * d3) (b3 * d2) d1) in
+        rewrite sym (multDistributesOverPlusLeft (a3 * d2) (b2 * d3) d1) in
+        rewrite mlt1 in Refl
 
 
-    trs : a1 * (S d3) + b3 * (S d1) = a3 * (S d1) + b1 * (S d3)
+    summ_1 : (a1 * d2 * d3  +  b2 * d1 * d3)  +  (a2 * d3 * d1  +  b3 * d2 * d1)  =  (a2 * d1 * d3  +  b1 * d2 * d3)  +  (a3 * d2 * d1  + b2 * d3 * d1)
+    summ_1 = summRefl mlt3_distr mlt1_distr
+
+    summ_r1 : (a1 * d2 * d3  +  b2 * d1 * d3  +  b3 * d2 * d1)  +  a2 * (d3 * d1)  =  (a3 * d2 * d1  + b2 * d3 * d1  +  b1 * d2 * d3)  +  a2 * (d1 * d3)
+    summ_r1 =
+        rewrite sym (plusAssociative (a3 * d2 * d1  + b2 * d3 * d1) (b1 * d2 * d3) (a2 * (d1 * d3))) in
+        rewrite plusCommutative (b1 * d2 * d3) (a2 * (d1 * d3)) in
+
+        rewrite sym (plusAssociative (a1 * d2 * d3  +  b2 * d1 * d3) (b3 * d2 * d1) (a2 * (d3 * d1))) in
+        rewrite plusCommutative (b3 * d2 * d1) (a2 * (d3 * d1)) in
+
+        rewrite plusCommutative (a3 * d2 * d1  +  b2 * d3 * d1) (a2 * (d1 * d3)  +  b1 * d2 * d3) in
+
+        rewrite (multAssociative a2 d1 d3) in
+        rewrite (multAssociative a2 d3 d1) in
+        rewrite summ_1 in Refl
+
+    summ_r1_5 : (a1 * d2 * d3  +  b2 * d1 * d3  +  b3 * d2 * d1)  +  a2 * (d3 * d1) = (a1 * d2 * d3  +  b2 * d1 * d3  +  b3 * d2 * d1)  +  a2 * (d1 * d3)
+    summ_r1_5 = rewrite multCommutative d3 d1 in Refl
+
+    summ_r2 : (a1 * d2 * d3  +  b2 * d1 * d3  +  b3 * d2 * d1)  +  a2 * (d1 * d3)  =  (a3 * d2 * d1  +  b2 * d3 * d1  +  b1 * d2 * d3)  +  a2 * (d1 * d3)
+    summ_r2 = trans (sym summ_r1_5) summ_r1
+
+    summ_2 : (a1 * d2 * d3  +  b2 * d1 * d3  +  b3 * d2 * d1)  =  (a3 * d2 * d1  +  b2 * d3 * d1  +  b1 * d2 * d3)
+    summ_2 = plusRightCancel (a1 * d2 * d3  +  b2 * d1 * d3  +  b3 * d2 * d1)  (a3 * d2 * d1  +  b2 * d3 * d1  +  b1 * d2 * d3) (a2 * (d1 * d3)) summ_r2
+
+    trs : a1 * d3 + b3 * d1 = a3 * d1 + b1 * d3
     trs = ?trs_rhs1
 
 
