@@ -1,6 +1,7 @@
 module SInt
 import Setoid
 
+%default total
 %access public export
 
 
@@ -28,11 +29,24 @@ implementation Neg SInt where
     abs s@(MkInt a b) = if a > b then s else (MkInt b a)
 
 
+mulSIntByNat : SInt -> Nat -> SInt
+mulSIntByNat (MkInt a b) k = MkInt (a * k) (b * k)
+
+infix 9 $*
+
+($*) : SInt -> Nat -> SInt
+($*) = mulSIntByNat
+
+data NatNZ : Nat -> Type where
+    NNZ : (Not (a = 0)) -> NatNZ a
+
+
 fromIntegerSInt : Integer -> SInt
 fromIntegerSInt x = fromInteger x
 
 toIntegerSInt : SInt -> Integer
 toIntegerSInt (MkInt a b) = (toIntegerNat a) - (toIntegerNat b)
+
 
 Show SInt where
     show x = show (toIntegerSInt x)
