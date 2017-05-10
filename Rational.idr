@@ -161,12 +161,12 @@ transRatEq
         rewrite multAssociative a3 d2 d1 in Refl
 
 
-    summ_4 : (a1 * d3 + b3 * d1)  *  d2  =  (a3 * d1  +  b1 * d3)  *  d2
+    summ_4 : (a1 * d3  +  b3 * d1)  *  d2  =  (a3 * d1  +  b1 * d3)  *  d2
     summ_4 = trans (trans (sym summ_3_l1) summ_3) summ_3_r1
 
 
-    trs : a1 * d3 + b3 * d1 = a3 * d1 + b1 * d3
-    trs = ?trs_rhs1
+    trs : a1 * d3 + b3 * d1  =  a3 * d1 + b1 * d3
+    trs = multRightCancel (a1 * d3 + b3 * d1) (a3 * d1 + b1 * d3) d2 p2 summ_4
 
 
 RationalSetoid : Setoid

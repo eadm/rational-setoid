@@ -65,6 +65,24 @@ summRefl : {a1 : Nat} -> {b1 : Nat} -> {a2: Nat} -> {b2: Nat} -> (a1 = b1) -> (a
 summRefl e1 e2 = rewrite e1 in rewrite e2 in Refl
 
 
+multRightCancel : (a, b, c : Nat)  ->  (Not (c = 0))  ->  (a * c) = (b * c)  ->  a = b
+multRightCancel a b Z nz p = void (nz Refl)
+multRightCancel Z Z (S k) nz p = Refl
+multRightCancel Z (S j) (S k) nz p = absurd p
+multRightCancel (S j) Z (S k) nz p = absurd (sym p)
+multRightCancel (S j) (S i) (S k) nz p =
+    plusConstantLeft j i (S Z) (multRightCancel j i (S k) nz p2) where
+
+    p1 : (1 * (S k) + j * (S k)) = (1 * (S k) + i * (S k))
+    p1 =
+        rewrite sym (multDistributesOverPlusLeft 1 j (S k)) in
+        rewrite sym (multDistributesOverPlusLeft 1 i (S k)) in
+        p
+
+    p2 : j * (S k) = i * (S k)
+    p2 = plusLeftCancel (1 * (S k)) (j * (S k)) (i * (S k)) p1
+
+
 reflxSIntEq : Reflx SIntEq
 reflxSIntEq (MkInt a b) = SRefl Refl
 
