@@ -135,6 +135,36 @@ transRatEq
     summ_3 = plusRightCancel (a1 * d2 * d3  +  b3 * d2 * d1) (a3 * d2 * d1  +  b1 * d2 * d3) (b2 * (d1 * d3)) summ_2_r
 
 
+    summ_3_l1 : a1 * d2 * d3  +  b3 * d2 * d1  =  (a1 * d3 + b3 * d1)  *  d2
+    summ_3_l1 =
+        rewrite multDistributesOverPlusLeft (a1 * d3) (b3 * d1) d2 in
+
+        rewrite sym (multAssociative b3 d1 d2) in
+        rewrite multCommutative d1 d2 in
+        rewrite multAssociative b3 d2 d1 in
+
+        rewrite sym (multAssociative a1 d3 d2) in
+        rewrite multCommutative d3 d2 in
+        rewrite multAssociative a1 d2 d3 in Refl
+
+
+    summ_3_r1 : a3 * d2 * d1  +  b1 * d2 * d3  =  (a3 * d1  +  b1 * d3)  *  d2
+    summ_3_r1 =
+        rewrite multDistributesOverPlusLeft (a3 * d1) (b1 * d3) d2 in
+
+        rewrite sym (multAssociative b1 d3 d2) in
+        rewrite multCommutative d3 d2 in
+        rewrite multAssociative b1 d2 d3 in
+
+        rewrite sym (multAssociative a3 d1 d2) in
+        rewrite multCommutative d1 d2 in
+        rewrite multAssociative a3 d2 d1 in Refl
+
+
+    summ_4 : (a1 * d3 + b3 * d1)  *  d2  =  (a3 * d1  +  b1 * d3)  *  d2
+    summ_4 = trans (trans (sym summ_3_l1) summ_3) summ_3_r1
+
+
     trs : a1 * d3 + b3 * d1 = a3 * d1 + b1 * d3
     trs = ?trs_rhs1
 
