@@ -1,5 +1,6 @@
 module Setoid
 
+%default total
 %access public export
 
 Reflx: {A : Type} -> (R: A -> A -> Type) -> Type

@@ -38,7 +38,7 @@ infix 9 $*
 ($*) = mulSIntByNat
 
 data NatNZ : Nat -> Type where
-    NNZ : (Not (a = 0)) -> NatNZ a
+    NNZ : (Not (x = 0)) -> NatNZ x
 
 
 fromIntegerSInt : Integer -> SInt

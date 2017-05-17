@@ -14,10 +14,16 @@ record Rational where
     isNotDivisionByZero : (NatNZ den)
 
 
-mulNotZero : {a : Nat} -> {b: Nat} -> (NatNZ a) -> (NatNZ b) -> (NatNZ (a * b))
-mulNotZero (NNZ f) (NNZ g) = (NNZ (mnz f g)) where
-    mnz : {a, b : Nat} -> Not (a = Z) -> Not (c = Z) -> Not (a * b = Z)
-    mnz f' g' Relf impossible
+
+mulNotZero : {a, b: Nat} -> (NatNZ a) -> (NatNZ b) -> (NatNZ (a * b))
+mulNotZero {a} {b} (NNZ f) (NNZ g) = (NNZ (mnz a b f g))
+where
+    mnz : (x, y: Nat) -> Not (x = Z) -> Not (y = Z) -> Not (x * y = Z)
+    mnz Z y f1 g1 = void (f1 Refl)
+    mnz x Z f1 g1 = void (g1 Refl)
+    mnz (S k) (S j) f1 g1 = mnz' j k where
+        mnz' : (j, k : Nat) -> Not (S (plus j (mult k (S j))) = Z)
+        mnz' m n Refl impossible
 
 
 oneNotZero : NatNZ (S Z)
@@ -32,7 +38,6 @@ implementation Num Rational where
     (+) (MkRat num1 den1 p1) (MkRat num2 den2 p2) = MkRat ((num1 $* den2) + (num2 $* den1)) (den1 * den2) (mulNotZero p1 p2)
 
     fromInteger x = MkRat (fromInteger x) (fromInteger 1) oneNotZero
-
 
 implementation Neg Rational where
     negate (MkRat num den p1) = MkRat (negate num) den p1
